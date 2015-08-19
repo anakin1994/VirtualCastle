@@ -4,6 +4,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <stdio.h>
+#include "ObjFileParser.h"
+#include "ModelObjectDTO.h"
 
 void displayFrame() {
 	glClearColor(0, 0, 0, 1);
@@ -29,6 +31,8 @@ void initializeGLUT(int* pargc, char** argv) {
 int main(int argc, char** argv) {
 	initializeGLUT(&argc, argv);
 	initializeGLEW();
+	ObjFileParser ofp("Cube.obj");
+	ModelObjectDTO model = ofp.Parse();
 	//Initializing code here
 	glutMainLoop();
 	//Resource releasing code here

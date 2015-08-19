@@ -81,6 +81,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main_file.cpp" />
+    <ClCompile Include="ModelObjectDTO.cpp" />
+    <ClCompile Include="ObjFileParser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ModelObjectDTO.h" />
+    <ClInclude Include="ObjFileParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
