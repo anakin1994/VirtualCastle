@@ -101,6 +101,7 @@ ModelObjectDTO ObjFileParser::Parse()
 			fgets(stupidBuffer, 1000, file);
 		}
 	}
+	fclose(file);
 	// For each vertex of each triangle
 	for (unsigned int i = 0; i < vertexIndices.size(); i++)
 	{

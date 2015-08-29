@@ -24,12 +24,24 @@
     <ClCompile Include="ModelObjectDTO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjFileParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelObjectDTO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

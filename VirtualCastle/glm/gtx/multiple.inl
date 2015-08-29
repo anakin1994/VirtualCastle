@@ -1,64 +1,191 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
-/// @ref gtx_multiple
-/// @file glm/gtx/multiple.inl
-/// @date 2009-10-26 / 2011-06-07
-/// @author Christophe Riccio
-///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// OpenGL Mathematics Copyright (c) 2005 - 2011 G-Truc Creation (www.g-truc.net)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Created : 2009-10-26
+// Updated : 2009-10-26
+// Licence : This source is under MIT License
+// File    : glm/gtx/multiple.inl
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Dependency:
+// - GLM core
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace glm
+namespace glm{
+namespace gtx{
+namespace multiple
 {
 	//////////////////////
 	// higherMultiple
 
-	template <typename genType>
-	GLM_FUNC_QUALIFIER genType higherMultiple(genType Source, genType Multiple)
+	template <typename genType> 
+	GLM_FUNC_QUALIFIER genType higherMultiple
+	(
+		genType const & Source, 
+		genType const & Multiple
+	)
 	{
-		return detail::compute_ceilMultiple<std::numeric_limits<genType>::is_iec559, std::numeric_limits<genType>::is_signed>::call(Source, Multiple);
+		genType Tmp = Source % Multiple;
+		return Tmp ? Source + Multiple - Tmp : Source;
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> higherMultiple(vecType<T, P> const & Source, vecType<T, P> const & Multiple)
+	template <> 
+	GLM_FUNC_QUALIFIER detail::thalf higherMultiple
+	(
+		detail::thalf const & Source, 
+		detail::thalf const & Multiple
+	)
 	{
-		return detail::functor2<T, P, vecType>::call(higherMultiple, Source, Multiple);
+		int Tmp = int(float(Source)) % int(float(Multiple));
+		return Tmp ? Source + Multiple - detail::thalf(float(Tmp)) : Source;
+	}
+
+	template <> 
+	GLM_FUNC_QUALIFIER float higherMultiple
+	(	
+		float const & Source, 
+		float const & Multiple
+	)
+	{
+		int Tmp = int(Source) % int(Multiple);
+		return Tmp ? Source + Multiple - float(Tmp) : Source;
+	}
+
+	template <> 
+	GLM_FUNC_QUALIFIER double higherMultiple
+	(
+		double const & Source, 
+		double const & Multiple
+	)
+	{
+		long Tmp = long(Source) % long(Multiple);
+		return Tmp ? Source + Multiple - double(Tmp) : Source;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec2<T> higherMultiple
+	(
+		detail::tvec2<T> const & Source, 
+		detail::tvec2<T> const & Multiple
+	)
+	{
+		detail::tvec2<T> Result;
+		for(typename detail::tvec2<T>::size_type i = 0; i < detail::tvec2<T>::value_size(); ++i)
+			Result[i] = higherMultiple(Source[i], Multiple[i]);
+		return Result;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec3<T> higherMultiple
+	(
+		detail::tvec3<T> const & Source, 
+		detail::tvec3<T> const & Multiple
+	)
+	{
+		detail::tvec3<T> Result;
+		for(typename detail::tvec3<T>::size_type i = 0; i < detail::tvec3<T>::value_size(); ++i)
+			Result[i] = higherMultiple(Source[i], Multiple[i]);
+		return Result;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec4<T> higherMultiple
+	(
+		detail::tvec4<T> const & Source, 
+		detail::tvec4<T> const & Multiple
+	)
+	{
+		detail::tvec4<T> Result;
+		for(typename detail::tvec4<T>::size_type i = 0; i < detail::tvec4<T>::value_size(); ++i)
+			Result[i] = higherMultiple(Source[i], Multiple[i]);
+		return Result;
 	}
 
 	//////////////////////
 	// lowerMultiple
 
-	template <typename genType>
-	GLM_FUNC_QUALIFIER genType lowerMultiple(genType Source, genType Multiple)
+	template <typename genType> 
+	GLM_FUNC_QUALIFIER genType lowerMultiple
+	(
+		genType const & Source, 
+		genType const & Multiple
+	)
 	{
-		return detail::compute_floorMultiple<std::numeric_limits<genType>::is_iec559, std::numeric_limits<genType>::is_signed>::call(Source, Multiple);
+		genType Tmp = Source % Multiple;
+		return Tmp ? Source - Tmp : Source;
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> lowerMultiple(vecType<T, P> const & Source, vecType<T, P> const & Multiple)
+	template <> 
+	GLM_FUNC_QUALIFIER detail::thalf lowerMultiple
+	(
+		detail::thalf const & Source, 
+		detail::thalf const & Multiple
+	)
 	{
-		return detail::functor2<T, P, vecType>::call(lowerMultiple, Source, Multiple);
+		int Tmp = int(float(Source)) % int(float(Multiple));
+		return Tmp ? Source - detail::thalf(float(Tmp)) : Source;
 	}
+
+	template <> 
+	GLM_FUNC_QUALIFIER float lowerMultiple
+	(
+		float const & Source, 
+		float const & Multiple
+	)
+	{
+		int Tmp = int(Source) % int(Multiple);
+		return Tmp ? Source - float(Tmp) : Source;
+	}
+
+	template <> 
+	GLM_FUNC_QUALIFIER double lowerMultiple
+	(
+		double const & Source, 
+		double const & Multiple
+	)
+	{
+		long Tmp = long(Source) % long(Multiple);
+		return Tmp ? Source - double(Tmp) : Source;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec2<T> lowerMultiple
+	(
+		detail::tvec2<T> const & Source, 
+		detail::tvec2<T> const & Multiple
+	)
+	{
+		detail::tvec2<T> Result;
+		for(typename detail::tvec2<T>::size_type i = 0; i < detail::tvec2<T>::value_size(); ++i)
+			Result[i] = lowerMultiple(Source[i], Multiple[i]);
+		return Result;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec3<T> lowerMultiple
+	(
+		detail::tvec3<T> const & Source, 
+		detail::tvec3<T> const & Multiple
+	)
+	{
+		detail::tvec3<T> Result;
+		for(typename detail::tvec3<T>::size_type i = 0; i < detail::tvec3<T>::value_size(); ++i)
+			Result[i] = lowerMultiple(Source[i], Multiple[i]);
+		return Result;
+	}
+
+	template <typename T> 
+	GLM_FUNC_QUALIFIER detail::tvec4<T> lowerMultiple
+	(
+		detail::tvec4<T> const & Source, 
+		detail::tvec4<T> const & Multiple
+	)
+	{
+		detail::tvec4<T> Result;
+		for(typename detail::tvec4<T>::size_type i = 0; i < detail::tvec4<T>::value_size(); ++i)
+			Result[i] = lowerMultiple(Source[i], Multiple[i]);
+		return Result;
+	}
+
+}//namespace multiple
+}//namespace gtx
 }//namespace glm

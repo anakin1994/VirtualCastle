@@ -1,162 +1,272 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
-/// @ref gtx_fast_trigonometry
-/// @file glm/gtx/fast_trigonometry.inl
-/// @date 2006-01-08 / 2014-11-25
-/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// OpenGL Mathematics Copyright (c) 2005 - 2011 G-Truc Creation (www.g-truc.net)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Created : 2006-01-08
+// Updated : 2006-01-08
+// Licence : This source is under MIT License
+// File    : glm/gtx/fast_trigonometry.inl
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace glm{
-namespace detail
+namespace gtx{
+namespace fast_trigonometry
 {
-	template <typename T>
-	GLM_FUNC_QUALIFIER T cos_52s(T x)
-	{
-		T const xx(x * x);
-		return (T(0.9999932946) + xx * (T(-0.4999124376) + xx * (T(0.0414877472) + xx * T(-0.0012712095))));
-	}
+    // sin
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastSin(const T x)
+    {
+        return x - ((x * x * x) / T(6)) + ((x * x * x * x * x) / T(120)) - ((x * x * x * x * x * x * x) / T(5040));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> cos_52s(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(cos_52s, x);
-	}
-}//namespace detail
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec2<T> fastSin(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastSin(x.x),
+            fastSin(x.y));
+    }
 
-	// wrapAngle
-	template <typename T>
-	GLM_FUNC_QUALIFIER T wrapAngle(T angle)
-	{
-		return abs<T>(mod<T>(angle, two_pi<T>()));
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec3<T> fastSin(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastSin(x.x),
+            fastSin(x.y),
+            fastSin(x.z));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> wrapAngle(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(wrapAngle, x);
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec4<T> fastSin(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastSin(x.x),
+            fastSin(x.y),
+            fastSin(x.z),
+            fastSin(x.w));
+    }
 
-	// cos
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastCos(T x)
-	{
-		T const angle(wrapAngle<T>(x));
+    // cos
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastCos(const T x)
+    {
+        return T(1) - (x * x * T(0.5)) + (x * x * x * x * T(0.041666666666)) - (x * x * x * x * x * x * T(0.00138888888888));
+    }
 
-		if(angle<half_pi<T>())
-			return detail::cos_52s(angle);
-		if(angle<pi<T>())
-			return -detail::cos_52s(pi<T>() - angle);
-		if(angle<(T(3) * half_pi<T>()))
-			return -detail::cos_52s(angle - pi<T>());
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec2<T> fastCos(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastCos(x.x),
+            fastCos(x.y));
+    }
 
-		return detail::cos_52s(two_pi<T>() - angle);
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec3<T> fastCos(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastCos(x.x),
+            fastCos(x.y),
+            fastCos(x.z));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastCos(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastCos, x);
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec4<T> fastCos(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastCos(x.x),
+            fastCos(x.y),
+            fastCos(x.z),
+            fastCos(x.w));
+    }
 
-	// sin
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastSin(T x)
-	{
-		return fastCos<T>(half_pi<T>() - x);
-	}
+    // tan
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastTan(const T x)
+    {
+        return x + (x * x * x * T(0.3333333333)) + (x * x * x * x * x * T(0.1333333333333)) + (x * x * x * x * x * x * x * T(0.0539682539));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastSin(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastSin, x);
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec2<T> fastTan(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastTan(x.x),
+            fastTan(x.y));
+    }
 
-	// tan
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastTan(T x)
-	{
-		return x + (x * x * x * T(0.3333333333)) + (x * x * x * x * x * T(0.1333333333333)) + (x * x * x * x * x * x * x * T(0.0539682539));
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec3<T> fastTan(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastTan(x.x),
+            fastTan(x.y),
+            fastTan(x.z));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastTan(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastTan, x);
-	}
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec4<T> fastTan(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastTan(x.x),
+            fastTan(x.y),
+            fastTan(x.z),
+            fastTan(x.w));
+    }
 
-	// asin
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastAsin(T x)
-	{
-		return x + (x * x * x * T(0.166666667)) + (x * x * x * x * x * T(0.075)) + (x * x * x * x * x * x * x * T(0.0446428571)) + (x * x * x * x * x * x * x * x * x * T(0.0303819444));// + (x * x * x * x * x * x * x * x * x * x * x * T(0.022372159));
-	}
+    // asin
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastAsin(const T x)
+    {
+        return x + (x * x * x * T(0.166666667)) + (x * x * x * x * x * T(0.075)) + (x * x * x * x * x * x * x * T(0.0446428571)) + (x * x * x * x * x * x * x * x * x * T(0.0303819444));// + (x * x * x * x * x * x * x * x * x * x * x * T(0.022372159));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastAsin(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastAsin, x);
-	}
+    template <typename T> detail::tvec2<T> fastAsin(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastAsin(x.x),
+            fastAsin(x.y));
+    }
 
-	// acos
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastAcos(T x)
-	{
-		return T(1.5707963267948966192313216916398) - fastAsin(x); //(PI / 2)
-	}
+    template <typename T> detail::tvec3<T> fastAsin(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastAsin(x.x),
+            fastAsin(x.y),
+            fastAsin(x.z));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastAcos(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastAcos, x);
-	}
+    template <typename T> detail::tvec4<T> fastAsin(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastAsin(x.x),
+            fastAsin(x.y),
+            fastAsin(x.z),
+            fastAsin(x.w));
+    }
 
-	// atan
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastAtan(T y, T x)
-	{
-		T sgn = sign(y) * sign(x);
-		return abs(fastAtan(y / x)) * sgn;
-	}
+    // acos
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastAcos(const T x)
+    {
+        return T(1.5707963267948966192313216916398) - fastAsin(x); //(PI / 2)
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastAtan(vecType<T, P> const & y, vecType<T, P> const & x)
-	{
-		return detail::functor2<T, P, vecType>::call(fastAtan, y, x);
-	}
+    template <typename T> detail::tvec2<T> fastAcos(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastAcos(x.x),
+            fastAcos(x.y));
+    }
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER T fastAtan(T x)
-	{
-		return x - (x * x * x * T(0.333333333333)) + (x * x * x * x * x * T(0.2)) - (x * x * x * x * x * x * x * T(0.1428571429)) + (x * x * x * x * x * x * x * x * x * T(0.111111111111)) - (x * x * x * x * x * x * x * x * x * x * x * T(0.0909090909));
-	}
+    template <typename T> detail::tvec3<T> fastAcos(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastAcos(x.x),
+            fastAcos(x.y),
+            fastAcos(x.z));
+    }
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> fastAtan(vecType<T, P> const & x)
-	{
-		return detail::functor1<T, T, P, vecType>::call(fastAtan, x);
-	}
+    template <typename T> detail::tvec4<T> fastAcos(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastAcos(x.x),
+            fastAcos(x.y),
+            fastAcos(x.z),
+            fastAcos(x.w));
+    }
+
+    // atan
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastAtan(const T y, const T x)
+    {
+        T sgn = sign(y) * sign(x);
+        return abs(fastAtan(y / x)) * sgn;
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec2<T> fastAtan(
+		const detail::tvec2<T>& y, 
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastAtan(y.x, x.x),
+            fastAtan(y.y, x.y));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec3<T> fastAtan(
+		const detail::tvec3<T>& y, 
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastAtan(y.x, x.x),
+            fastAtan(y.y, x.y),
+            fastAtan(y.z, x.z));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec4<T> fastAtan(
+		const detail::tvec4<T>& y, 
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastAtan(y.x, x.x),
+            fastAtan(y.y, x.y),
+            fastAtan(y.z, x.z),
+            fastAtan(y.w, x.w));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER T fastAtan(const T x)
+    {
+        return x - (x * x * x * T(0.333333333333)) + (x * x * x * x * x * T(0.2)) - (x * x * x * x * x * x * x * T(0.1428571429)) + (x * x * x * x * x * x * x * x * x * T(0.111111111111)) - (x * x * x * x * x * x * x * x * x * x * x * T(0.0909090909));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec2<T> fastAtan(
+		const detail::tvec2<T>& x)
+    {
+        return detail::tvec2<T>(
+            fastAtan(x.x),
+            fastAtan(x.y));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec3<T> fastAtan(
+		const detail::tvec3<T>& x)
+    {
+        return detail::tvec3<T>(
+            fastAtan(x.x),
+            fastAtan(x.y),
+            fastAtan(x.z));
+    }
+
+    template <typename T> 
+    GLM_FUNC_QUALIFIER detail::tvec4<T> fastAtan(
+		const detail::tvec4<T>& x)
+    {
+        return detail::tvec4<T>(
+            fastAtan(x.x),
+            fastAtan(x.y),
+            fastAtan(x.z),
+            fastAtan(x.w));
+    }
+
+}//namespace fast_trigonometry
+}//namespace gtx
 }//namespace glm
