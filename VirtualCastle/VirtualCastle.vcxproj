@@ -81,16 +81,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="main_file.cpp" />
     <ClCompile Include="ModelObjectDTO.cpp" />
     <ClCompile Include="ObjFileParser.cpp" />
     <ClCompile Include="OpenGLHelper.cpp" />
+    <ClCompile Include="tga.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DisplayableObject.h" />
     <ClInclude Include="ModelObjectDTO.h" />
     <ClInclude Include="ObjFileParser.h" />
     <ClInclude Include="OpenGLHelper.h" />
+    <ClInclude Include="tga.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
