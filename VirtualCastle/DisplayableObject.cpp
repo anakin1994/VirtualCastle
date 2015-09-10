@@ -76,6 +76,16 @@ void DisplayableObject::LoadTexture(string fileName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
+void DisplayableObject::Move(glm::vec3 direction, float distance)
+{
+	for (int i = 0; i < geomVertexCount * 3; i += 3)
+	{
+		geomVertices[i] += direction.x * distance;
+		geomVertices[i + 1] += direction.y * distance;
+		geomVertices[i + 2] += direction.z * distance;
+	}
+}
+
 void DisplayableObject::LoadFromFile(string filePath)
 {
 	ObjFileParser ofp(filePath);

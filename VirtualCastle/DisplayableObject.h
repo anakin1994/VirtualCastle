@@ -25,5 +25,6 @@ public:
 	void LoadFromFile(std::string filePath);
 	void modelToArrays(ModelObjectDTO *model, float *vertArray, float *uvsArray, float *normalsArray);
 	void LoadTexture(std::string fileName);
+	void Move(glm::vec3 direction, float distance);
 };
 
