@@ -20,7 +20,7 @@ void DisplayableObject::Display()
 	glVertexPointer(3, GL_FLOAT, 0, geomVertices);
 	glNormalPointer(GL_FLOAT, 0, geomNormals);
 	glTexCoordPointer(2, GL_FLOAT, 0, geomTexCoords);
-	glDrawArrays(GL_QUADS, 0, geomVertexCount);
+	glDrawArrays(GL_TRIANGLES, 0, geomVertexCount);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);

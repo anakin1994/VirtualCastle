@@ -4,11 +4,12 @@
 
 Camera::Camera()
 {
-	float distanceFromCenter = 40;
-	center = vec3(0.0f, 0.0f, 0.0f);
-	observer = vec3(0.0f, 0.0f, distanceFromCenter * centerRadius);
-	noseVector = vec3(0.0f, 1.0f, 0.0f);
+	float distanceFromCenter = 10;
+	float height = 5.0f;
 	alpha = 0.0f;
+	observer = vec3(0.0f, height, distanceFromCenter * centerRadius);
+	center = vec3(centerRadius * sin(radians(alpha)), height, centerRadius * (distanceFromCenter - cos(radians(alpha))));
+	noseVector = vec3(0.0f, 1.0f, 0.0f);
 }
 
 
