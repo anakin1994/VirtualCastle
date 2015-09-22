@@ -5,7 +5,7 @@
 Camera::Camera()
 {
 	float distanceFromCenter = 10;
-	float height = 5.0f;
+	float height = 10.0f;
 	alpha = 0.0f;
 	observer = vec3(0.0f, height, distanceFromCenter * centerRadius);
 	center = vec3(centerRadius * sin(radians(alpha)), height, centerRadius * (distanceFromCenter - cos(radians(alpha))));
