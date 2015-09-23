@@ -32,7 +32,6 @@ ModelObjectDTO ObjFileParser::Parse()
 	if (file == NULL)
 	{
 		printf("Impossible to open the file !\n");
-		//return null;							//TODO: jak zwróciæ null w tym chorym jêzyku?
 	}
 
 	while (1)
@@ -78,7 +77,6 @@ ModelObjectDTO ObjFileParser::Parse()
 			if (matches != 9)
 			{
 				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
-				//return null;						//TODO
 			}
 
 			if (vertexIndex[0] > 0)
